@@ -4,7 +4,7 @@ import os
 
 import time
 
-ALLOWED_EXTENSIONS = {'mid', 'musicxml', 'mxl', 'xml', 'abc'}
+ALLOWED_EXTENSIONS = {'mid', 'midi', 'musicxml', 'mxl', 'xml', 'abc'}
 
 
 def allowed_file(filename):
@@ -74,5 +74,9 @@ def upload_file():
             return jsonify(success=False, error="not a midi file", song_name=filename)
 
         filename = filename.replace("'", "")
+        original_filename = filename
+        # if file ends with .midi, replace with .mid
+        if filename.endswith(".midi"):
+            filename = filename[:-5] + ".mid"
         file.save(os.path.join(webinterface.config['UPLOAD_FOLDER'], filename))
-        return jsonify(success=True, reload_songs=True, song_name=filename)
+        return jsonify(success=True, reload_songs=True, song_name=original_filename)
