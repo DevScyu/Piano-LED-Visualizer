@@ -489,6 +489,39 @@
                 </div>
             </div>
 
+            <div class="w-full md:w-1/2 px-3 m-auto">
+                <label class="block uppercase tracking-wide text-xs font-bold mt-2 text-gray-600 dark:text-gray-400">
+                    <div data-translate="note_hiding_frequency">Note Hiding Frequency</div>
+                    (<b id="note_hiding_frequency">100</b>%)
+                </label>
+                <div class="justify-center flex">
+                    <svg onclick="input = document.getElementById('note_hiding_frequency_slider');
+                            input.value = parseInt(input.value) - 1;
+                            if(input.value <= -1){input.value = 0};
+                            change_setting('change_note_hiding_frequency', input.value);
+                            document.getElementById('note_hiding_frequency').innerHTML = input.value;" class="h-8 w-6 cursor-pointer"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <div class="w-full justify-center flex text-sm text-gray-600 dark:text-gray-400">
+                        0<input onchange="change_setting('change_note_hiding_frequency', this.value);"
+                                 oninput="document.getElementById('note_hiding_frequency_slider').value = this.value;
+                                    document.getElementById('note_hiding_frequency').innerHTML = this.value;"
+                                 id="note_hiding_frequency_slider" class="w-1/2 mx-2" type="range" value="0" min="0" max="100">100
+                    </div>
+                    <svg onclick="input = document.getElementById('note_hiding_frequency_slider');
+                            input.value = parseInt(input.value) + 1;
+                            if(input.value >= 101){input.value = 100};
+                            change_setting('change_note_hiding_frequency', input.value);
+                            document.getElementById('note_hiding_frequency').innerHTML = input.value;" class="h-8 w-6 cursor-pointer"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+
             <div class="flex flex-wrap w-full m-auto">
                 <div class="w-full md:w-1/2 px-3 md:mb-0 m-auto">
                     <label class="block uppercase tracking-wide text-xs font-bold mt-2 text-gray-600 dark:text-gray-400"

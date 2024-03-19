@@ -1139,6 +1139,14 @@ def change_setting():
 
         return jsonify(success=True)
 
+    if setting_name == "change_note_hiding_frequency":
+        value = int(value)
+        webinterface.learning.note_hiding_frequency = value
+        webinterface.learning.note_hiding_frequency = clamp(webinterface.learning.note_hiding_frequency, 0, 100)
+        webinterface.usersettings.change_setting_value("note_hiding_frequency", webinterface.learning.note_hiding_frequency)
+
+        return jsonify(success=True)
+
     if setting_name == "change_hands":
         value = int(value)
         webinterface.learning.hands = value
