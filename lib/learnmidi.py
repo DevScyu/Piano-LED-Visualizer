@@ -421,7 +421,7 @@ class LearnMIDI:
                             else:
                                 brightness = 0.5
 
-                            if random.randint(0, 100) >= note_hiding_frequency:
+                            if random.randint(0, 100) >= self.note_hiding_frequency:
                                 red, green, blue = [0, 0, 0]
                                 if msg.channel == 1:
                                     # red = int(self.hand_colorList[self.hand_colorR][0] * brightness)
