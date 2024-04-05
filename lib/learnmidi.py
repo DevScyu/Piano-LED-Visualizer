@@ -259,24 +259,10 @@ class LearnMIDI:
             if not msg.is_meta:
                 # Calculate note position on the strip and display
                 if msg.type == 'note_on' or msg.type == 'note_off':
-                    note_position = get_note_position(msg.note, self.ledstrip, self.ledsettings)
 
                     brightness = 0.5
                     brightness /= dim
-                    red, green, blue = [0, 0, 0]
-                    if msg.channel == 1:
-                        # red = int(self.hand_colorList[self.hand_colorR][0] * brightness)
-                        # green = int(self.hand_colorList[self.hand_colorR][1] * brightness)
-                        # blue = int(self.hand_colorList[self.hand_colorR][2] * brightness)
-                        red, green, blue = [int(c * brightness) for c in self.hand_colorList[self.hand_colorR]]
-                    if msg.channel == 2:
-                        # red = int(self.hand_colorList[self.hand_colorL][0] * brightness)
-                        # green = int(self.hand_colorList[self.hand_colorL][1] * brightness)
-                        # blue = int(self.hand_colorList[self.hand_colorL][2] * brightness)
-                        red, green, blue = [int(c * brightness) for c in self.hand_colorList[self.hand_colorL]]
-
-                    self.ledstrip.strip.setPixelColor(note_position, Color(red, green, blue))
-                    self.ledstrip.strip.show()
+                    self.light_up_note(msg, brightness)
 
     def handle_wrong_notes(self, wrong_notes):
 
@@ -415,7 +401,6 @@ class LearnMIDI:
                     if not msg.is_meta:
                         # Calculate note position on the strip and display
                         if msg.type == 'note_on' or msg.type == 'note_off':
-                            note_position = get_note_position(msg.note, self.ledstrip, self.ledsettings)
                             if msg.velocity == 0:
                                 brightness = 0
                             else:
@@ -424,19 +409,7 @@ class LearnMIDI:
                             if random.randint(0, 100) >= self.note_hiding_frequency != 0:
                                 brightness = 0
 
-                            red, green, blue = [0, 0, 0]
-                            if msg.channel == 1:
-                                # red = int(self.hand_colorList[self.hand_colorR][0] * brightness)
-                                # green = int(self.hand_colorList[self.hand_colorR][1] * brightness)
-                                # blue = int(self.hand_colorList[self.hand_colorR][2] * brightness)
-                                red, green, blue = [int(c * brightness) for c in self.hand_colorList[self.hand_colorR]]
-                            if msg.channel == 2:
-                                # red = int(self.hand_colorList[self.hand_colorL][0] * brightness)
-                                # green = int(self.hand_colorList[self.hand_colorL][1] * brightness)
-                                # blue = int(self.hand_colorList[self.hand_colorL][2] * brightness)
-                                red, green, blue = [int(c * brightness) for c in self.hand_colorList[self.hand_colorL]]
-                            self.ledstrip.strip.setPixelColor(note_position, Color(red, green, blue))
-                            self.ledstrip.strip.show()
+                            self.light_up_note(msg, brightness)
 
                         # Save notes to press
                         if msg.type == 'note_on' and msg.velocity > 0 and (
@@ -465,6 +438,22 @@ class LearnMIDI:
 
             if not self.is_loop_active or self.is_started_midi is False:
                 keep_looping = False
+
+    def light_up_note(self, msg, brightness):
+        note_position = get_note_position(msg.note, self.ledstrip, self.ledsettings)
+        red, green, blue = [0, 0, 0]
+        if msg.channel == 1:
+            # red = int(self.hand_colorList[self.hand_colorR][0] * brightness)
+            # green = int(self.hand_colorList[self.hand_colorR][1] * brightness)
+            # blue = int(self.hand_colorList[self.hand_colorR][2] * brightness)
+            red, green, blue = [int(c * brightness) for c in self.hand_colorList[self.hand_colorR]]
+        if msg.channel == 2:
+            # red = int(self.hand_colorList[self.hand_colorL][0] * brightness)
+            # green = int(self.hand_colorList[self.hand_colorL][1] * brightness)
+            # blue = int(self.hand_colorList[self.hand_colorL][2] * brightness)
+            red, green, blue = [int(c * brightness) for c in self.hand_colorList[self.hand_colorL]]
+        self.ledstrip.strip.setPixelColor(note_position, Color(red, green, blue))
+        self.ledstrip.strip.show()
 
     def convert_midi_to_abc(self, midi_file):
         if not os.path.isfile('Songs/' + midi_file.replace(".mid", ".abc")):
